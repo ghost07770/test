@@ -1,40 +1,42 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Sep 28 15:04:50 2019
+Created on Sun Sep 29 10:37:03 2019
 
 @author: Kritartha Patowary
 """
-import numpy as np
-'''
-arr = np.array([[1,2,3], [4,2,5]])
 
-print("Array is of type:",type(arr))
-print("No. of dimensions:",arr.ndim)
-print("Shape of array:",arr.shape)
-print("Size of the array:",arr.size)
-print("Array stores elements of type",arr.dtype) '''
+from sklearn.datasets import load_boston
+data = load_boston()
 
-arr = np.array([1,2,3])
-print("Array with rank 1:\n",arr)
+#print a histogram of the quantity to predict: price
+import matplotlob.pyplot as plt
+plt.figure(figsize=(4,3))
+plt.hist(data.target)
+plt.xlabel('price ($1000s)')
+plt.ylabel('count')
+plt.tight_layout()
+plt.show()
 
-arr = np.array([[1,2,3],[4,5,6]])
-print("Array with rank 2:\n",arr)
+for index, feature_name in enumerate(data.feature_names):
+    plt.figure(figsize=(4,3))
+    plt.scatter(data.data[:,index], data.target)
+    plt.ylabel('Price', size=15)
+    plt.xlabel(feature_name, size=15)
+    plt.tight_layout()
+ #plt.show()
+from sklearn.linear_model import LinearRegression
+from  sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(data.data, data.target
+clf = LinearRegression()
+clf.fit(X_train, y_train)
+predicted = clf.predict(X_test)
+expected = y_test
 
-arr=np.array((1,2,3))
-print("\nArray created using passed tuple:",arr)
-
-arr = np.array([[-1,2,0,4],
-                [4,-0.5,6,0],
-                [2.6,0,7,8],
-                [3,-7,4,2.0]])
-print("Initial array:",arr)
-
-sliced_arr = arr[:2, ::2]
-print("Array with first two rows and alternating columns(0 and 2)",sliced_arr)
-
-index_arr = arr[[1,1,0,3],[3,2,1,0]]
-print(index_arr)
-
-a=np.array([[1,2],[3,4]])
-b=np.array([[5,5]])
-print(a+b)
+plt.figure(figsize=(4,3))
+plt.scatter(expected, predicted)
+plt.plot([0, 50], [0, 50], '--k)
+plt.axis('tight')
+plt.xlabel('True price ($1000s)')
+plt.ylabel('Predicted price ($1000s)')
+plt.tight_layout()
+plt.show()
